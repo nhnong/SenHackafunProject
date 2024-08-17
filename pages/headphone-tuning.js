@@ -10,6 +10,12 @@ export default function HeadphoneTuning({ csvData }) {
     return (
         <div>
             <h1>Tuning for {headphone}</h1>
+
+            <audio controls>
+                <source src="/data/Barney.mp3" type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+
             <pre>{csvData}</pre>
         </div>
     );
