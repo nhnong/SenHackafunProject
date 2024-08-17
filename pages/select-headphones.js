@@ -31,9 +31,9 @@ export default function SelectHeadphones() {
     };
 
     return (
-        <div>
+        <div className='selectheadphone'>
             <h1>Select Your Headphones</h1>
-            <label htmlFor="headphone-search">Search your headphones:</label>
+            <label className='text' htmlFor="headphone-search">Search your headphones:</label>
             <input
                 type="text"
                 id="headphone-search"
@@ -42,7 +42,7 @@ export default function SelectHeadphones() {
                 placeholder="Type to search..."
             />
             <br />
-            <label htmlFor="headphones">Choose your headphones:</label>
+            <label className= 'text' htmlFor="headphones">Choose your headphones:</label>
             <select id="headphones" name="headphones" onChange={handleSelect}>
                 <option value="">--Select a headphone--</option>
                 {filteredHeadphones.map((headphone, index) => (
