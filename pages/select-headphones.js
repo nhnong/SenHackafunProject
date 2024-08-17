@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function SelectHeadphones() {
     const [headphones, setHeadphones] = useState([]);
     const [filteredHeadphones, setFilteredHeadphones] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const router = useRouter();
 
     useEffect(() => {
         fetch('/api/get-headphones')
@@ -23,6 +25,11 @@ export default function SelectHeadphones() {
         setFilteredHeadphones(filtered);
     };
 
+    const handleSelect = (event) => {
+        const selectedHeadphone = event.target.value;
+        router.push(`/headphone-tuning?headphone=${selectedHeadphone}`);
+    };
+
     return (
         <div>
             <h1>Select Your Headphones</h1>
@@ -36,7 +43,8 @@ export default function SelectHeadphones() {
             />
             <br />
             <label htmlFor="headphones">Choose your headphones:</label>
-            <select id="headphones" name="headphones">
+            <select id="headphones" name="headphones" onChange={handleSelect}>
+                <option value="">--Select a headphone--</option>
                 {filteredHeadphones.map((headphone, index) => (
                     <option key={index} value={headphone}>
                         {headphone}
