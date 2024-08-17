@@ -1,40 +1,25 @@
-import fs from 'fs';
-import path from 'path';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export async function getStaticProps() {
-    const measurementsDir = path.join(process.cwd(), 'public/data/measurements');
-    const filenames = fs.readdirSync(measurementsDir);
+export default function SelectHeadphones() {
+    const [headphones, setHeadphones] = useState([]);
 
-    return {
-        props: {
-            headphones: filenames.map(filename => filename.replace('.csv', '')),
-        },
-    };
-}
-
-export default function SelectHeadphones({ headphones }) {
     useEffect(() => {
-        const dropdown = document.getElementById('headphones');
-        headphones.forEach((headphone) => {
-            const option = document.createElement('option');
-            option.value = headphone;
-            option.text = headphone;
-            dropdown.appendChild(option);
-        });
-    }, [headphones]);
+        fetch('/api/get-headphones')
+            .then((response) => response.json())
+            .then((data) => setHeadphones(data));
+    }, []);
 
     return (
-        <html>
-            <head>
-                <title>Select Your Headphones</title>
-            </head>
-            <body>
-                <h1>Select Your Headphones</h1>
-                <label htmlFor="headphones">Choose your headphones:</label>
-                <select id="headphones" name="headphones">
-                </select>
-            </body>
-        </html>
+        <div>
+            <h1>Select Your Headphones</h1>
+            <label htmlFor="headphones">Choose your headphones:</label>
+            <select id="headphones" name="headphones">
+                {headphones.map((headphone, index) => (
+                    <option key={index} value={headphone}>
+                        {headphone}
+                    </option>
+                ))}
+            </select>
+        </div>
     );
 }
