@@ -17,7 +17,7 @@ export default function HeadphoneTuning({ csvData }) {
 
 export async function getServerSideProps(context) {
     const { headphone } = context.query;
-    const filePath = path.join(process.cwd(), 'public/measurements', `${headphone}.csv`);
+    const filePath = path.join(process.cwd(), 'public/data/measurements', `${headphone}.csv`);
     const csvData = fs.readFileSync(filePath, 'utf-8');
 
     return {
