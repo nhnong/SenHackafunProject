@@ -1,50 +1,40 @@
-[build-system]
-requires = [
-    "hatchling",
-]
-build-backend = "hatchling.build"
+import fs from 'fs';
+import path from 'path';
+import { useEffect } from 'react';
 
-[project]
-name = "autoeq"
-version = "4.1.2"
-authors = [
-  { name="Jaakko Pasanen", email="jaakko.o.pasanen@gmail.com" },
-]
-description = "Automatic headphone equalizer config generator"
-readme = "README.md"
-requires-python = ">=3.8,<3.12"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
-dependencies = [
-    'Pillow~=10.0.1',
-    'matplotlib~=3.7.3',
-    'scipy~=1.10.1',
-    'numpy~=1.24.4',
-    'tabulate~=0.9.0',
-    'soundfile~=0.12.1',
-    'pyyaml~=6.0',
-    'tqdm~=4.66.1',
-]
+export async function getStaticProps() {
+    const measurementsDir = path.join(process.cwd(), 'public/measurements');
+    const filenames = fs.readdirSync(measurementsDir);
 
-[project.urls]
-"Homepage" = "https://github.com/jaakkopasanen/AutoEq"
-"Bug Tracker" = "https://github.com/jaakkopasanen/AutoEq/issues"
+    return {
+        props: {
+            headphones: filenames.map(filename => filename.replace('.csv', '')),
+        },
+    };
+}
 
-[tool.hatch.build]
-include = [
-    "/autoeq",
-    "LICENCE",
-    "pyproject.toml",
-]
-exclude = [
-    "/.github",
-    "/targets",
-    "/measurements",
-    "/results",
-    "/tests",
-    ".gitignore",
-    "/autoeq/README.md"
-]
+export default function SelectHeadphones({ headphones }) {
+    useEffect(() => {
+        const dropdown = document.getElementById('headphones');
+        headphones.forEach((headphone) => {
+            const option = document.createElement('option');
+            option.value = headphone;
+            option.text = headphone;
+            dropdown.appendChild(option);
+        });
+    }, [headphones]);
+
+    return (
+        <html>
+            <head>
+                <title>Select Your Headphones</title>
+            </head>
+            <body>
+                <h1>Select Your Headphones</h1>
+                <label htmlFor="headphones">Choose your headphones:</label>
+                <select id="headphones" name="headphones">
+                </select>
+            </body>
+        </html>
+    );
+}
