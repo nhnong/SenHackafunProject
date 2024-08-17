@@ -3,7 +3,7 @@ import path from 'path';
 import { useEffect } from 'react';
 
 export async function getStaticProps() {
-    const measurementsDir = path.join(process.cwd(), 'public/measurements');
+    const measurementsDir = path.join(process.cwd(), 'public/data/measurements');
     const filenames = fs.readdirSync(measurementsDir);
 
     return {
